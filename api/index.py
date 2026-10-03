@@ -5,6 +5,7 @@ from flask import Flask, request
 app = Flask(__name__)
 
 TOKEN = os.environ.get("TOKEN")
+WEBHOOK_SECRET = os.environ.get("WEBHOOK_SECRET")
 
 
 def telegram(method, data):
@@ -23,21 +24,28 @@ def main_menu():
     }
 
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/", methods=["GET"])
+def home():
+    return "Алина в кармане 💗 Бот работает!"
+
+
 @app.route("/api/index", methods=["GET", "POST"])
 def webhook():
 
     if request.method == "GET":
-        if request.args.get("setup") == "1":
-            webhook_url = request.url.split("?")[0]
 
-            result = telegram("setWebhook", {
-                "url": webhook_url
-            })
+        secret = request.args.get("setup")
 
-            return result.text
+        if secret != WEBHOOK_SECRET:
+            return "OK"
 
-        return "Алина в кармане 💗 Бот работает!"
+        webhook_url = request.url.split("?")[0]
+
+        result = telegram("setWebhook", {
+            "url": webhook_url
+        })
+
+        return result.text
 
 
     update = request.get_json(silent=True)
@@ -57,6 +65,7 @@ def webhook():
 
 
     if text == "/start":
+
         telegram("sendMessage", {
             "chat_id": chat_id,
             "text": (
@@ -68,40 +77,53 @@ def webhook():
             "reply_markup": main_menu()
         })
 
+
     elif text == "💌 Открой, когда...":
+
         telegram("sendMessage", {
             "chat_id": chat_id,
             "text": "Выбери, когда хочешь открыть сообщение 💌"
         })
 
+
     elif text == "❤️ Почему ты мне дорога":
+
         telegram("sendMessage", {
             "chat_id": chat_id,
             "text": "Здесь будет много причин, почему ты мне дорога ❤️"
         })
 
+
     elif text == "🌸 Карточка дня":
+
         telegram("sendMessage", {
             "chat_id": chat_id,
             "text": "Твоя карточка дня 🌸"
         })
 
+
     elif text == "🔮 Предсказание дня":
+
         telegram("sendMessage", {
             "chat_id": chat_id,
             "text": "Твоё предсказание 🔮"
         })
 
+
     elif text == "💌 Письма от меня":
+
         telegram("sendMessage", {
             "chat_id": chat_id,
             "text": "Здесь будут мои письма тебе 💌"
         })
 
+
     else:
+
         telegram("sendMessage", {
             "chat_id": chat_id,
             "text": "Я пока не знаю, что ответить 🥺"
         })
+
 
     return "OK"
