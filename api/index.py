@@ -8,14 +8,6 @@ app = Flask(__name__)
 TOKEN = os.environ.get("TOKEN")
 WEBHOOK_SECRET = os.environ.get("WEBHOOK_SECRET")
 
-# Фотографии для писем.
-# Позже сюда подставим Telegram file_id.
-PHOTO_1 = os.environ.get("PHOTO_1", "")
-PHOTO_2 = os.environ.get("PHOTO_2", "")
-PHOTO_3 = os.environ.get("PHOTO_3", "")
-PHOTO_4 = os.environ.get("PHOTO_4", "")
-PHOTO_5 = os.environ.get("PHOTO_5", "")
-
 
 def telegram(method, data):
     url = f"https://api.telegram.org/bot{TOKEN}/{method}"
@@ -765,25 +757,6 @@ https://t.me/+4JTgn_maahgyMjYy
 
 def send_letter(chat_id, number):
     text = letters[number - 1]
-
-    photos = [
-        PHOTO_1,
-        PHOTO_2,
-        PHOTO_3,
-        PHOTO_4,
-        PHOTO_5
-    ]
-
-    photo = photos[number - 1]
-
-    # Сначала отправляем фотографию
-    if photo:
-        telegram("sendPhoto", {
-            "chat_id": chat_id,
-            "photo": photo
-        })
-
-    # Затем отправляем полное письмо отдельным сообщением
     telegram("sendMessage", {
         "chat_id": chat_id,
         "text": text
@@ -843,17 +816,6 @@ def webhook():
     if not chat_id:
         return "OK"
 
-    photos = message.get("photo")
-    if photos:
-        file_id = photos[-1]["file_id"]
-        telegram(
-            "sendMessage",
-            {
-                "chat_id": chat_id,
-                "text": f"PHOTO_FILE_ID:\n{file_id}"
-            }
-        )
-        return "OK"
     # ========================================================
     # /start
     # ========================================================
