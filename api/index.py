@@ -843,7 +843,17 @@ def webhook():
     if not chat_id:
         return "OK"
 
-
+    photos = message.get("photo")
+    if photos:
+        file_id = photos[-1]["file_id"]
+        telegram(
+            "sendMessage",
+            {
+                "chat_id": chat_id,
+                "text": f"PHOTO_FILE_ID:\n{file_id}"
+            }
+        )
+        return "OK"
     # ========================================================
     # /start
     # ========================================================
