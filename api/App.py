@@ -10,7 +10,7 @@ from telebot import types
 # 🔑 ТОКЕН БОТА
 # ==========================================
 
-TOKEN = "здесь мой токен(не убирай его)"
+TOKEN = "8676263246:AAEc28Ikr6yPVONBrSUQYds8FUj-WrVgNnk"
 
 bot = telebot.TeleBot(TOKEN)
 
