@@ -526,9 +526,8 @@ def index():
             base_url = "https://pocket-alina-aqyb.vercel.app/api/index"
 
             result = telegram("setWebhook", {
-                "url": base_url,
-                "secret_token": WEBHOOK_SECRET
-            })
+    "url": base_url
+})
 
             return result.text
 
