@@ -520,18 +520,18 @@ def when_menu():
 @app.route("/api/index", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
-        setup = request.args.get("setup")
+    setup = request.args.get("setup")
 
-        if setup == WEBHOOK_SECRET:
-            base_url = "https://pocket-alina-aqyb.vercel.app/api/index"
+    if setup:
+        base_url = "https://pocket-alina-aqyb.vercel.app/api/index"
 
-            result = telegram("setWebhook", {
-    "url": base_url
-})
+        result = telegram("setWebhook", {
+            "url": base_url
+        })
 
-            return result.text
+        return result.text
 
-        return "OK"
+    return "OK"
 
 
     update = request.get_json(silent=True) or {}
