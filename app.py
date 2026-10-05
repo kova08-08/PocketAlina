@@ -1227,4 +1227,11 @@ def unknown(message):
 # ▶️ ЗАПУСК
 # ==========================================
 
-bot.infinity_polling()
+from threading import Thread
+
+
+def run_bot():
+    bot.infinity_polling()
+
+
+Thread(target=run_bot).start()
