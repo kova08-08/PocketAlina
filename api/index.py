@@ -533,13 +533,6 @@ def index():
 
         return "OK"
 
-    if WEBHOOK_SECRET:
-        incoming_secret = request.headers.get(
-            "X-Telegram-Bot-Api-Secret-Token"
-        )
-
-        if incoming_secret != WEBHOOK_SECRET:
-            return "Forbidden", 403
 
     update = request.get_json(silent=True) or {}
     message = update.get("message")
