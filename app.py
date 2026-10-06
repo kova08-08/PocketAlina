@@ -16,7 +16,10 @@ bot = telebot.TeleBot(TOKEN)
 
 app = Flask(__name__)
 
-
+@app.route("/health")
+def health():
+    return "OK"
+    
 # ==========================================
 # 💗 ГЛАВНЫЙ ТЕКСТ
 # ==========================================
@@ -1236,3 +1239,6 @@ def run_bot():
 
 
 Thread(target=run_bot).start()
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=10000)
